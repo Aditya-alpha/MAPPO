@@ -18,6 +18,7 @@ export default function Navbar() {
                 <div onClick={() => navigate("/")} className="cursor-pointer" >Home</div>
                 <div onClick={() => navigate("/about")} className="cursor-pointer" >About</div>
                 <div onClick={() => navigate("/help")} className="cursor-pointer" >Help</div>
+                <div onClick={() => {isSignedin ? navigate("/tracking") : (alert("Please Login/SignUp"), navigate("/signup"))}} className="cursor-pointer" >Tracking</div>
                 {isSignedin ?
                     <div onClick={() => navigate("/profile")} className="cursor-pointer">Profile</div>
                     :
