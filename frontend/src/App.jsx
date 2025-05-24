@@ -6,6 +6,8 @@ import Home from './homepage';
 import Login from './login/login';
 import Signup from './signup/signup';
 import SignupOTP from './signup/signup-otp';
+import Profile from './profile/profile';
+import Tracks from './tracks';
 
 export const Context = React.createContext()
 
@@ -19,7 +21,9 @@ function App() {
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/signup/otp" element={<SignupOTP />} />
                     <Route path="/login" element={<Login />} />
-                    <Route path="/tracking" element={<TrackerPage />} />
+                    <Route path="/:username/tracking" element={<TrackerPage />} />
+                    <Route path="/:username/profile" element={<Profile />} />
+                    <Route path="/:username/tracks" element={<Tracks />} />
                 </Routes>
             </Router>
         </Context.Provider>

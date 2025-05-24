@@ -3,6 +3,7 @@ const cors = require('cors')
 const sendEmail = require("./email/email")
 const UserInfo = require("./models/userinfodb")
 const Otp = require("./models/otpdb")
+const Tracks = require("./models/tracksdb")
 const bcrypt = require('bcrypt')
 require("dotenv").config()
 
@@ -75,7 +76,7 @@ app.post("/signup/otp", async (req, res) => {
 })
 
 app.post("/signup/resend-otp", async (req, res) => {
-    let { email } = req.body;
+    let { email } = req.body
     try {
         let otpData = await Otp.findOne({ email: email })
         if (!otpData) {
@@ -107,6 +108,44 @@ app.post("/login", async (req, res) => {
             return res.status(403).send({ message: "Password is incorrect" });
         }
         return res.status(200).send(isUser)
+    }
+    catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+app.get("/:username/profile", async (req, res) => {
+    let { username } = req.params
+    try {
+        let data = await UserInfo.findOne({ username }).select("username email profile_photo")
+        res.status(200).send(data)
+    }
+    catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+app.post("/:username/tracking", async (req, res) => {
+    let { username } = req.params
+    let { positions, trackName } = req.body
+    try {
+        await Tracks.create({
+            creator: username,
+            track_details: positions,
+            track_name: trackName
+        })
+        res.status(200).send({ message: "Track saved successfully." })
+    }
+    catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+app.get("/:username/tracks", async (req, res) => {
+    let { username } = req.params
+    try {
+        let data = await Tracks.find({creator: username}).select("createdAt track_details track_name")
+        res.status(200).send(data)
     }
     catch (error) {
         res.status(500).send({ message: "Internal server error" })

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
 delete L.Icon.Default.prototype._getIconUrl;
 L.Icon.Default.mergeOptions({
-    iconRetinaUrl:"https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png",
+    iconRetinaUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon-2x.png",
     iconUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-icon.png",
     shadowUrl: "https://unpkg.com/leaflet@1.9.3/dist/images/marker-shadow.png",
 });
@@ -28,6 +29,8 @@ function RecenterMap({ lat, lng, autoCenter }) {
 }
 
 function TrackerPage() {
+    const navigate = useNavigate()
+    const { username } = useParams()
     const [tracking, setTracking] = useState(false);
     const [position, setPosition] = useState({
         latitude: 23.0707,
@@ -38,6 +41,8 @@ function TrackerPage() {
     const [autoCenter, setAutoCenter] = useState(true);
     const [rotateWithOrientation, setRotateWithOrientation] = useState(false);
     const [compassHeading, setCompassHeading] = useState(0);
+    const [isTrackingStopped, setIsTrackingStopped] = useState(false);
+    const [trackName, setTrackName] = useState("")
 
     useEffect(() => {
         navigator.permissions?.query({ name: "geolocation" }).then((result) => {
@@ -109,6 +114,34 @@ function TrackerPage() {
         };
     }, [rotateWithOrientation]);
 
+    async function handleSaveTrack() {
+        if(trackName.trim().length === 0) {
+            alert ("Enter track name.")
+            return
+        }
+        try {
+            const response = await fetch(`http://localhost:8000/${username}/tracking`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ positions, trackName })
+            })
+            if (response.ok) {
+                let data = await response.json()
+                alert(`${data.message}`)
+                setIsTrackingStopped(false)
+                
+            }
+            else {
+                alert("An error occured while saving track.")
+            }
+        }
+        catch (error) {
+            alert("An error occured. Please try again.")
+        }
+    }
+
 
     const polylinePositions = positions.map((pos) => [pos.latitude, pos.longitude]);
 
@@ -132,7 +165,7 @@ function TrackerPage() {
                 <p>Current Location: {position.latitude !== 23.0707 && position.longitude !== 80.0982 ? `${position.latitude}, ${position.longitude}` : `Unknown`}</p>
                 <p>Last Updated: {position.timestamp}</p>
             </div>
-           <div className="absolute top-4 right-4 space-y-2 z-50 flex flex-col items-end">
+            <div className="absolute top-4 right-4 space-y-2 z-50 flex flex-col items-end font-medium">
                 <button
                     onClick={() => setTracking(true)}
                     className="bg-green-500 hover:bg-green-600 px-6 py-2 rounded-md text-white"
@@ -140,7 +173,7 @@ function TrackerPage() {
                     Start
                 </button>
                 <button
-                    onClick={() => setTracking(false)}
+                    onClick={() => { setTracking(false); setIsTrackingStopped(true) }}
                     className="bg-red-500 hover:bg-red-600 px-6 py-2 rounded-md text-white"
                 >
                     Stop
@@ -188,6 +221,26 @@ function TrackerPage() {
                     )}
                 </MapContainer>
             </div>
+            <button onClick={() => navigate("/")} className="absolute bottom-4 right-4 z-50 bg-teal-800 hover:bg-teal-900 px-6 py-2 rounded-md text-white font-medium" >Go Home</button>
+            {isTrackingStopped &&
+                <div className="h-80 w-96 absolute inset-0 m-auto z-50 bg-blue-200 opacity-80 rounded-2xl" >
+                    <div className="h-52 w-64 mx-auto my-2 bg-green-50" >
+                        <MapContainer zoom={10} style={{ height: "100%", width: "100%" }} >
+                            <TileLayer
+                                attribution="&copy; OpenStreetMap contributors"
+                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                            />
+                            <Polyline positions={polylinePositions} color="blue" />
+                        </MapContainer>
+                    </div>
+                    <p className="inline ml-7 font-medium" >Enter Track name: </p>
+                    <input onChange={(e) => setTrackName(e.target.value)} className="bg-white  rounded-md ml-3 px-2 py-1" />
+                    <div className="w-52 my-3 flex mx-auto font-semibold text-lg justify-between" >
+                        <button onClick={handleSaveTrack} className="bg-red-500 h-10 w-24 rounded-lg" >Save Track</button>
+                        <button onClick={() => { setIsTrackingStopped(false); setPositions([]) }} className="bg-white h-10 w-24 rounded-lg" >Cancel</button>
+                    </div>
+                </div>
+            }
         </div>
     );
 }
