@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { MapContainer, TileLayer, Marker, Polyline, useMap } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
@@ -223,9 +223,9 @@ function TrackerPage() {
             </div>
             <button onClick={() => navigate("/")} className="absolute bottom-4 right-4 z-50 bg-teal-800 hover:bg-teal-900 px-6 py-2 rounded-md text-white font-medium" >Go Home</button>
             {isTrackingStopped &&
-                <div className="h-80 w-96 absolute inset-0 m-auto z-50 bg-blue-200 opacity-80 rounded-2xl" >
+                <div className="h-80 w-96 absolute inset-0 m-auto z-50 bg-blue-200 opacity-80 rounded-2xl shadow-2xl" >
                     <div className="h-52 w-64 mx-auto my-2 bg-green-50" >
-                        <MapContainer zoom={10} style={{ height: "100%", width: "100%" }} >
+                        <MapContainer zoom={12} center={polylinePositions[polylinePositions.length / 2]} style={{ height: "100%", width: "100%" }} >
                             <TileLayer
                                 attribution="&copy; OpenStreetMap contributors"
                                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -237,7 +237,7 @@ function TrackerPage() {
                     <input onChange={(e) => setTrackName(e.target.value)} className="bg-white  rounded-md ml-3 px-2 py-1" />
                     <div className="w-52 my-3 flex mx-auto font-semibold text-lg justify-between" >
                         <button onClick={handleSaveTrack} className="bg-red-500 h-10 w-24 rounded-lg" >Save Track</button>
-                        <button onClick={() => { setIsTrackingStopped(false); setPositions([]) }} className="bg-white h-10 w-24 rounded-lg" >Cancel</button>
+                        <button onClick={() => setIsTrackingStopped(false)} className="bg-white h-10 w-24 rounded-lg" >Cancel</button>
                     </div>
                 </div>
             }

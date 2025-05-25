@@ -144,7 +144,29 @@ app.post("/:username/tracking", async (req, res) => {
 app.get("/:username/tracks", async (req, res) => {
     let { username } = req.params
     try {
-        let data = await Tracks.find({creator: username}).select("createdAt track_details track_name")
+        let data = await Tracks.find({creator: username}).select("createdAt track_details track_name public")
+        res.status(200).send(data)
+    }
+    catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+app.get("/:username/tracks/:track_id", async (req, res) => {
+    let { track_id } = req.params
+    try {
+        let data = await Tracks.findOne({_id: track_id}).select("createdAt track_details track_name public")
+        res.status(200).send(data)
+    }
+    catch (error) {
+        res.status(500).send({ message: "Internal server error" })
+    }
+})
+
+app.patch("/:username/tracks", async (req, res) => {
+    let { track_id, public } = req.body
+    try {
+        let data = await Tracks.findOneAndUpdate({_id: track_id}, {public: public}, {new: true}).select("createdAt track_details track_name public")
         res.status(200).send(data)
     }
     catch (error) {
