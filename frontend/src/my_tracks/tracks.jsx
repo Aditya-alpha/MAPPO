@@ -60,10 +60,11 @@ export default function Tracks() {
                     return (
                         <div onClick={() => navigate(`/${username}/tracks/${track._id}`)} key={track._id} className="bg-blue-300 h-60 w-72 p-3 rounded-lg cursor-pointer" >
                             <div className="bg-white h-40 w-60 m-auto mb-2" >
-                                <MapContainer zoom={11} center={n} style={{ height: "100%", width: "100%" }} >
+                                <MapContainer className="z-10" zoom={11} center={n} style={{ height: "100%", width: "100%" }}>
                                     <TileLayer
                                         attribution="&copy; OpenStreetMap contributors"
                                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+
                                     />
                                     <Polyline positions={polylinePositions} color="blue" />
                                 </MapContainer>

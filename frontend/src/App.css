@@ -1,1 +1,4 @@
 @import "tailwindcss";
+.sidebarbutton {
+    @apply px-4 py-2 bg-transparent text-white rounded-lg w-full;
+}
