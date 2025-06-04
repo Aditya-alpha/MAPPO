@@ -154,7 +154,7 @@ export default function ShowTrack() {
                     </MapContainer>
                 </div>
             }
-            <button onClick={() => navigate(`/${username}/tracks`)} className="absolute bottom-4 right-4 z-50 bg-teal-800 hover:bg-teal-900 px-6 py-2 rounded-md text-white font-medium" >Go Back</button>
+            <button onClick={() => navigate(-1)} className="absolute bottom-4 right-4 z-50 bg-teal-800 hover:bg-teal-900 px-6 py-2 rounded-md text-white font-medium" >Go Back</button>
         </div>
     )
 }

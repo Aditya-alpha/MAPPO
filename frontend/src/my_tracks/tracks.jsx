@@ -1,9 +1,10 @@
 import { useNavigate, useParams } from "react-router-dom";
-import Navbar from "../navbar";
+import Navbar from "../navbar/navbar";
 import { useEffect, useState } from "react";
 import { MapContainer, TileLayer, Polyline } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 
 export default function Tracks() {
@@ -38,7 +39,7 @@ export default function Tracks() {
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ track_id: trackId, public: !currentValue})
+                body: JSON.stringify({ track_id: trackId, public: !currentValue })
             })
             if (response.ok) {
                 let data = await response.json()
@@ -50,16 +51,39 @@ export default function Tracks() {
         }
     }
 
+    async function handleDeleteTrack(trackId, e) {
+        e.stopPropagation()
+        try {
+            let response = await fetch(`http://localhost:8000/${username}/tracks`, {
+                method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ track_id: trackId })
+            })
+            if (response.ok) {
+                handleFetchTracks()
+                alert("Track deleted successfully !")
+            }
+            else {
+                alert("Failed to delete the track. Try again.")
+            }
+        }
+        catch (error) {
+            alert("An error occured, please refresh and try again")
+        }
+    }
+
     return (
-        <div className="h-full w-full bg-blue-200" >
+        <div className="h-full w-full min-h-screen bg-[#1db1ff]" >
             <Navbar />
-            <div className="mx-20 flex flex-wrap gap-x-16 gap-y-12 mt-12 pb-28" >
+            <div className="px-20 flex flex-wrap gap-x-2 gap-y-12 mt-12 pb-28" >
                 {tracks.map(track => {
                     let polylinePositions = track.track_details.map(point => [point.latitude, point.longitude])
                     let n = polylinePositions[polylinePositions.length / 2]
                     return (
-                        <div onClick={() => navigate(`/${username}/tracks/${track._id}`)} key={track._id} className="bg-blue-300 h-60 w-72 p-3 rounded-lg cursor-pointer" >
-                            <div className="bg-white h-40 w-60 m-auto mb-2" >
+                        <div onClick={() => navigate(`/${username}/tracks/${track._id}`)} key={track._id} className="bg-sky-600 h-64 w-80 p-3 rounded-lg cursor-pointer" >
+                            <div className="bg-white h-40 w-full m-auto mb-2" >
                                 <MapContainer className="z-10" zoom={11} center={n} style={{ height: "100%", width: "100%" }}>
                                     <TileLayer
                                         attribution="&copy; OpenStreetMap contributors"
@@ -75,10 +99,13 @@ export default function Tracks() {
                                     <div onClick={(e) => handleUpdateTrack(track._id, track.public, e)} className="relative group" >
                                         <p className="absolute -bottom-6 -right-28 bg-black text-white rounded text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap" >You can make this map public or private</p>
                                         <p className="absolute -bottom-11 -right-16 bg-black text-white rounded-b text-xs px-2 py-1 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap" >Current status: {track.public ? "Public" : "Private"}</p>
-                                        { track.public ? <BsToggle2On className="text-3xl" /> : <BsToggle2Off className="text-3xl" /> }
+                                        {track.public ? <BsToggle2On className="text-3xl" /> : <BsToggle2Off className="text-3xl" />}
                                     </div>
                                 </div>
-                                <p>Created on: {new Date(track.createdAt).toLocaleString()}</p>
+                                <div className="flex justify-between mt-2" >
+                                    <p>Created on: {new Date(track.createdAt).toLocaleString()}</p>
+                                    <RiDeleteBin5Fill onClick={(e) => handleDeleteTrack(track._id, e)} className="text-2xl" />
+                                </div>
                             </div>
                         </div>
                     )
