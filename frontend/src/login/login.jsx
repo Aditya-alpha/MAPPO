@@ -42,7 +42,7 @@ export default function Login() {
             return
         }
         try {
-            const response = await fetch("http://localhost:8000/login", {
+            const response = await fetch(`${process.env.BACKEND_URL}/login`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

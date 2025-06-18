@@ -36,7 +36,7 @@ export default function ChangeProfilePassword() {
             return
         }
         try {
-            const response = await fetch(`http://localhost:8000/login/updatepassword`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/login/updatepassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -120,7 +120,7 @@ function TrackerPage() {
             return
         }
         try {
-            const response = await fetch(`http://localhost:8000/${username}/tracking`, {
+            const response = await fetch(`${process.env.BACKEND_URL}/${username}/tracking`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

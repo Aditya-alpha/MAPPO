@@ -18,7 +18,7 @@ export default function Profile() {
 
     async function handleFetch() {
         try {
-            let response = await fetch(`http://localhost:8000/${username}/profile`, {
+            let response = await fetch(`${process.env.BACKEND_URL}/${username}/profile`, {
                 method: "GET"
             })
             if (response.ok) {
@@ -44,7 +44,7 @@ export default function Profile() {
         let formData = new FormData()
         formData.append("profile_photo", newProfilePhoto)
         try {
-            let response = await fetch(`http://localhost:8000/${username}/profile`, {
+            let response = await fetch(`${process.env.BACKEND_URL}/${username}/profile`, {
                 method: "POST",
                 body: formData
             })

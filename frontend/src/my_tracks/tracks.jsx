@@ -14,7 +14,7 @@ export default function Tracks() {
 
     async function handleFetchTracks() {
         try {
-            let response = await fetch(`http://localhost:8000/${username}/tracks`, {
+            let response = await fetch(`${process.env.BACKEND_URL}/${username}/tracks`, {
                 method: "GET"
             })
             if (response.ok) {
@@ -34,7 +34,7 @@ export default function Tracks() {
     async function handleUpdateTrack(trackId, currentValue, e) {
         e.stopPropagation()
         try {
-            let response = await fetch(`http://localhost:8000/${username}/tracks`, {
+            let response = await fetch(`${process.env.BACKEND_URL}/${username}/tracks`, {
                 method: "PATCH",
                 headers: {
                     "Content-Type": "application/json",
@@ -54,7 +54,7 @@ export default function Tracks() {
     async function handleDeleteTrack(trackId, e) {
         e.stopPropagation()
         try {
-            let response = await fetch(`http://localhost:8000/${username}/tracks`, {
+            let response = await fetch(`${process.env.BACKEND_URL}/${username}/tracks`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",

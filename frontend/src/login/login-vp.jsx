@@ -22,7 +22,7 @@ export default function VerifyOtp() {
             return
         }
         try {
-            const response = await fetch("http://localhost:8000/login/forgotpassword/verify", {
+            const response = await fetch(`${process.env.BACKEND_URL}/login/forgotpassword/verify`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

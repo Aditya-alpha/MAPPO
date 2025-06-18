@@ -34,7 +34,7 @@ export default function Signup() {
             return
         }
         try {
-            let response = await fetch("http://localhost:8000/signup", {
+            let response = await fetch(`${process.env.BACKEND_URL}/signup`, {
                 method: "POST",
                 headers: {
                     'Content-Type': "application/json"
