@@ -14,7 +14,7 @@ export default function SearchTracks() {
 
     async function handleFetchTracks() {
         try {
-            let response = await fetch(`${process.env.BACKEND_URL}/${username}/search-tracks`, {
+            let response = await fetch(`${process.env.VITE_BACKEND_URL}/${username}/search-tracks`, {
                 method: "GET"
             })
             if (response.ok) {
@@ -34,7 +34,7 @@ export default function SearchTracks() {
     async function handleSearch(e) {
         setTargetSearch(e.target.value)
         try {
-            let response = await fetch(`${process.env.BACKEND_URL}/${username}/search-tracks`, {
+            let response = await fetch(`${process.env.VITE_BACKEND_URL}/${username}/search-tracks`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

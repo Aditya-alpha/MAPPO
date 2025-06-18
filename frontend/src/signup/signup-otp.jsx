@@ -18,7 +18,7 @@ export default function SignupOTP() {
             return
         }
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/signup/otp`, {
+            const response = await fetch(`${process.env.VITE_BACKEND_URL}/signup/otp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -43,7 +43,7 @@ export default function SignupOTP() {
     async function handleResendOtp() {
         setIsResending(true)
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/signup/resend-otp`, {
+            const response = await fetch(`${process.env.VITE_BACKEND_URL}/signup/resend-otp`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -24,7 +24,7 @@ export default function UpdatePassword() {
             return
         }
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/${username}/profile/updatepassword`, {
+            const response = await fetch(`${process.env.VITE_BACKEND_URL}/${username}/profile/updatepassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

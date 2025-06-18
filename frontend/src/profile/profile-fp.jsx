@@ -19,7 +19,7 @@ export default function ForgotProfilePassword() {
 
     async function sendOtp() {
         try {
-            const response = await fetch(`${process.env.BACKEND_URL}/login/forgotpassword`, {
+            const response = await fetch(`${process.env.VITE_BACKEND_URL}/login/forgotpassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
