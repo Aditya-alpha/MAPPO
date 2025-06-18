@@ -36,7 +36,7 @@ export default function ChangeProfilePassword() {
             return
         }
         try {
-            const response = await fetch(`${process.env.VITE_BACKEND_URL}/login/updatepassword`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/updatepassword`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

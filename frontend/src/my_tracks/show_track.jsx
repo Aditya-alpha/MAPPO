@@ -68,7 +68,7 @@ export default function ShowTrack() {
 
     async function handleFetch() {
         try {
-            let response = await fetch(`${process.env.VITE_BACKEND_URL}/${username}/tracks/${track_id}`, {
+            let response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/${username}/tracks/${track_id}`, {
                 method: "GET"
             })
             if (response.ok) {

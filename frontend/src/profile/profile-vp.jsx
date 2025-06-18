@@ -24,7 +24,7 @@ export default function VerifyProfileOtp() {
             return
         }
         try {
-            const response = await fetch(`${process.env.VITE_BACKEND_URL}/login/forgotpassword/verify`, {
+            const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/login/forgotpassword/verify`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -34,7 +34,7 @@ export default function Signup() {
             return
         }
         try {
-            let response = await fetch(`${process.env.VITE_BACKEND_URL}/signup`, {
+            let response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/signup`, {
                 method: "POST",
                 headers: {
                     'Content-Type': "application/json"
