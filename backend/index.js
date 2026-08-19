@@ -9,6 +9,7 @@ require("dotenv").config()
 const multer = require('multer')
 const cloudinary = require("./uploadProfilePhoto")
 const { CloudinaryStorage } = require('multer-storage-cloudinary')
+const connectDB = require("./db")
 
 const app = express()
 
@@ -304,6 +305,18 @@ app.post("/:username/profile/updatepassword", async (req, res) => {
     }
 })
 
-app.listen(PORT, () => {
-    console.log("Server is listening...")
-})
+const startServer = async () => {
+    try {
+        await connectDB()
+
+        app.listen(PORT, () => {
+            console.log(`Server running on http://localhost:${PORT}`)
+        })
+    } catch (err) {
+        console.error('Failed to start server')
+        console.error(err)
+        process.exit(1)
+    }
+}
+
+startServer()

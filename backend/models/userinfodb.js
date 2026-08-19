@@ -1,8 +1,4 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
-
-const mongoURI = process.env.MONGODB_URI.replace("<db_name>", "userinfo_MAP_db")
-const userinfodb = mongoose.createConnection(mongoURI)
 
 let userSchema = new mongoose.Schema({
     username: {
@@ -25,6 +21,4 @@ let userSchema = new mongoose.Schema({
     }
 })
 
-let UserInfo = userinfodb.model("UserInfo", userSchema)
-
-module.exports = UserInfo;
+module.exports = mongoose.model("UserInfo", userSchema)

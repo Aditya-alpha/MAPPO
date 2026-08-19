@@ -1,9 +1,4 @@
 const mongoose = require('mongoose')
-const { type } = require('os')
-require('dotenv').config()
-
-const mongoURI = process.env.MONGODB_URI.replace("<db_name>", "otp_MAP_db")
-const otpdb = mongoose.createConnection(mongoURI)
 
 let otpSchema = new mongoose.Schema({
     username: {
@@ -28,6 +23,4 @@ let otpSchema = new mongoose.Schema({
     }
 })
 
-let Otp = otpdb.model("Otp", otpSchema)
-
-module.exports = Otp
+module.exports = mongoose.model("Otp", otpSchema);

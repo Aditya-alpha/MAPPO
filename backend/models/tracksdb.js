@@ -1,8 +1,4 @@
 const mongoose = require('mongoose')
-require('dotenv').config()
-
-const mongoURI = process.env.MONGODB_URI.replace("<db_name>", "tracks_MAP_db")
-const tracksdb = mongoose.createConnection(mongoURI)
 
 let trackSchema = new mongoose.Schema({
     creator: {
@@ -38,6 +34,4 @@ let trackSchema = new mongoose.Schema({
     }
 })
 
-let Tracks = tracksdb.model("Tracks", trackSchema)
-
-module.exports = Tracks
+module.exports = mongoose.model("Tracks", trackSchema)
