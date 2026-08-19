@@ -16,7 +16,9 @@ const app = express()
 const corsOptions = {
     origin: [`http://localhost:5173`,`https://mappo-delta.vercel.app`],
     methods: "GET, POST, PUT, DELETE, PATCH, HEAD",
-    credentials: true
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true,
+    optionsSuccessStatus: 200
 }
 
 const PORT = process.env.PORT
